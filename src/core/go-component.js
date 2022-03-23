@@ -1,6 +1,8 @@
 const missingTemplate = '<div>template unspecified!</div>';
 
 export default class GreyOwl extends HTMLElement {
+    _sRoot = null; // TODO find a way to make this object unavailable to externals scripts
+
     constructor() {
         super();
 
@@ -8,17 +10,30 @@ export default class GreyOwl extends HTMLElement {
     }
 
     connectedCallback() {
+        console.log('cmp:', this.cmpName);
+        console.log('cmp-ctx:', this.dataContext);
+
         this.beforeRender();
 
         // rendering
-        const _sRoot = this.attachShadow({mode: this.mode});
+        this._sRoot = this.attachShadow({mode: this.mode});
 
         const template = Handlebars.compile(this.template);
-        _sRoot.innerHTML = template(this);
+        this._sRoot.innerHTML = template(this.dataContext ? this.dataContext : {});
 
-        this.afterRender(_sRoot);
+        // assign contexts
+        const contextedEls = this._sRoot.querySelector('[context]');
+        console.log(contextedEls);
 
-        this.addListeners(_sRoot);
+        if(contextedEls && this.dataContext){
+            contextedEls.dataContext = this.dataContext[contextedEls.getAttribute('context')];
+
+            console.log('updated context:', contextedEls.dataContext);
+        }
+
+        this.afterRender(this._sRoot);
+
+        this.addListeners(this._sRoot);
     }
 
     beforeRender() {

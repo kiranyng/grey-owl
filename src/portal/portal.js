@@ -6,11 +6,21 @@ const template = `
         color: gray;
     }
 </style>
-<p>I am portal component - mode:{{mode}}</p>
+<p >I am portal component - mode:{{id}}</p>
+<greyowl-header context='headings'></grayowl-header>
 `;
 
 class Portal extends GOComponent {
     mode = 'closed';
+    cmpName = 'portal';
+
+    dataContext = {
+        id: '2013041',
+        headings: {
+            h1: 'Kiran',
+            h2: 'YNG'
+        }
+    };
 
     constructor() {
         super();
