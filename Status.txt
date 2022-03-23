@@ -1,0 +1,6 @@
+OBSERVATION:
+
+We cannot rely on current appraoch of templetization
+as it is rendering the business logic in the UI
+
+Better to try with handlebars for now
