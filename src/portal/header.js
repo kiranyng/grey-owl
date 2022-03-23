@@ -5,14 +5,17 @@ const tmpl = `<style>
         color: blue;
     }
 </style>
-<h2>{{h2}}</h2>`;
+<h1>{{h1}}</h1>
+<greyowl-heading2 context='h2'></greyowl-heading2>
+<greyowl-heading2 context='h2'></greyowl-heading2>`;
 
 class Header extends GOComponent {
     mode = 'closed';
     template = tmpl;
+    cmpName = 'header';
 
     afterRender() {
-        console.log('afterRender context:', this.dataContext);
+        Logger.dev('afterRender context:', this.dataContext);
     }
 }
 

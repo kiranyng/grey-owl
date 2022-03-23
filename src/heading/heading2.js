@@ -6,20 +6,34 @@ const tmpl = `
         color: blue;
     }
 </style>
-<h2>{{name}}</h2>
+<h2>{{one}}</h2>
 `;
 
-class Header extends GOComponent {
+class Heading2 extends GOComponent {
     mode = 'closed';
     cmpName = 'header';
 
     template = tmpl;
 
     afterRender() {
-        console.log('afterRender context:', this.objContext);
-        
-        console.log('getAttribute:', this.getAttribute('can-you'));
+        Logger.dev('afterRender context:', this.dataContext);
+        Logger.dev('getAttribute:', this.getAttribute('can-you'));
+
+        this._sRoot.querySelector('h2').addEventListener('click', () => {
+            const newData = Store.getDataClone();
+            //newData.id = 'ABCD';
+            newData.headings.h2.one = 'Kiran';
+            Store.update(newData);
+        });
+    }
+
+    shouldUpdate(oldData, newData){
+        if(oldData.headings.h2.one === newData.headings.h2.one){
+            return false;
+        }
+
+        return true;
     }
 }
 
-window.customElements.define('greyowl-header', Header);
+window.customElements.define('greyowl-heading2', Heading2);

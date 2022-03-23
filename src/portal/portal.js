@@ -6,19 +6,23 @@ const template = `
         color: gray;
     }
 </style>
-<p >I am portal component - mode:{{id}}</p>
-<greyowl-header context='headings'></grayowl-header>
-`;
+<p>I am portal component - mode:{{id}}</p>
+<button id="alertBtn">update</button>
+<greyowl-header context='headings'></grayowl-header>`;
 
 class Portal extends GOComponent {
     mode = 'closed';
     cmpName = 'portal';
+    _compRef = this;
 
     dataContext = {
         id: '2013041',
         headings: {
-            h1: 'Kiran',
-            h2: 'YNG'
+            h1: 'KiranYNG',
+            h2: {
+                one: 'Kiran',
+                two: 'YNG'
+            }
         }
     };
 
@@ -26,16 +30,32 @@ class Portal extends GOComponent {
         super();
 
         this.template = template;
+
+        Store.update(this.dataContext);
+        // below callback binding/scoping is important to pocess the right `this` reference
+        Store.setCallback( this.onDataChange.bind(this) );
     }
 
-    addListeners(shadowRoot) {
+    afterRender() {
         // attach event listeners
-        addEventListener('click', (ev) => {
-            if(ev.target == shadowRoot.querySelector('p')[0]){
-                console.log('Hurray! you clicked the right one!', ev.target);
-            }
-            console.log('clicked portal!', ev.target, shadowRoot.querySelector('p'));
+        this._sRoot.querySelector('#alertBtn').addEventListener('click', (ev) => {
+            Logger.dev('clicked button!', ev);
+/*
+            this.dataContext.id = '12345';
+            this.dataContext.headings.h2.one = 'KiranKumarYNG';
+*/
+            const newData = Store.getDataClone();
+            newData.id = '98765';
+            Store.update(newData);
         });
+    }
+
+    shouldUpdate(oldData, newData) {
+        if(oldData.id === newData.id){
+            return false;
+        }
+
+        return true;
     }
 }
 
