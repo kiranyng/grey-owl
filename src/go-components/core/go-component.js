@@ -1,3 +1,5 @@
+import Handlebars from "handlebars";
+
 const missingTemplate = '<div>template unspecified!</div>';
 
 export default class GreyOwl extends HTMLElement {
@@ -106,4 +108,13 @@ export default class GreyOwl extends HTMLElement {
     disconnectedCallback(){
         // placeholder. can be overridden by child classes
     }
+
+    triggerEvent(eventName, detail) {
+        const event = new CustomEvent(eventName, { detail });
+
+        Logger.log(`Triggering event ${eventName}`, event);
+
+        // Dispatch the event.
+        this.dispatchEvent(event);
+      }
 }

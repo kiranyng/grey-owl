@@ -19,11 +19,11 @@ class Header extends GOComponent {
     }
 
     shouldUpdate(oldData, newData) {
-        if(oldData.h1 === newData.h1){
-            return false;
+        if(oldData.h1 !== newData.h1){
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
 

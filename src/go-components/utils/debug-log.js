@@ -1,4 +1,4 @@
-const Logger = {
+const Logger = Object.freeze({
     level: 50,
     error: (...args) => {
         Logger.level >= 5 && console.error(...args);
@@ -15,4 +15,6 @@ const Logger = {
     todo: () => {
         Logger.level >= 75 && console.info(...args);
     }
-};
+});
+
+window.Logger = Logger;

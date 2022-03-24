@@ -1,4 +1,4 @@
-const Store = Object.freeze( (function(){
+const Store = Object.freeze((function(){
     let storeCallback = ()=>{
         Logger.warn('store callback not specified!');
     };
@@ -22,3 +22,5 @@ const Store = Object.freeze( (function(){
         }
     }
 })());
+
+window.Store = Store;

@@ -50,11 +50,11 @@ class Portal extends GOComponent {
     }
 
     shouldUpdate(oldData, newData) {
-        if(oldData.id === newData.id){
-            return false;
+        if(oldData.id !== newData.id){
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
 

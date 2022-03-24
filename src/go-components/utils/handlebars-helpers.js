@@ -1,4 +1,8 @@
+import Handlebars from 'handlebars';
+
 Handlebars.registerHelper('iff', function(a, operator, b, opts) {
+    Logger.dev(`iff ${a} ${operator} ${b} `,opts);
+
     var bool = false;
     switch(operator) {
        case '==':

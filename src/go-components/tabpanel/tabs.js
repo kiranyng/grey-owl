@@ -31,7 +31,7 @@ const tmpl = `<style>
 </style>
 <ul>
     {{#each items}}
-        <li {{#if this.active}} class="active" {{/if}}>
+        <li key='{{this.key}}' {{#iff @root.active '==' this.key}} class="active" {{/iff}}>
             {{this.title}}
         </li>
     {{/each}}
@@ -45,8 +45,24 @@ class TabpanelTabs extends GOComponent {
 
     afterRender(){
         this._sRoot.querySelector('ul').addEventListener('click', (ev) => {
-            
+            Logger.dev('ul click event', ev.target.tagName);
+
+            if(ev.target.tagName.toLowerCase() === 'li') {
+                const itemKey = ev.target.getAttribute('key');
+                const item = this.dataContext.items[itemKey];
+
+                this.triggerEvent('tabchange', item);
+            }
         });
+    }
+
+    shouldUpdate(oldData, newData) {
+        // @todo @fix items array comparision should be deep
+        if((oldData.items !== newData.items) || (oldData.active !== newData.active)){
+            return true;
+        }
+
+        return false;
     }
 }
 
