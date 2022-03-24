@@ -11,7 +11,7 @@ const tmpl = `
 
 class Heading2 extends GOComponent {
     mode = 'closed';
-    cmpName = 'header';
+    cmpName = 'heading';
 
     template = tmpl;
 
@@ -21,14 +21,14 @@ class Heading2 extends GOComponent {
 
         this._sRoot.querySelector('h2').addEventListener('click', () => {
             const newData = Store.getDataClone();
-            //newData.id = 'ABCD';
-            newData.headings.h2.one = 'Kiran';
+            // newData.id = 'ABCD';
+            newData.headings.h2.one = 'TEST';
             Store.update(newData);
         });
     }
 
     shouldUpdate(oldData, newData){
-        if(oldData.headings.h2.one === newData.headings.h2.one){
+        if(oldData.one === newData.one){
             return false;
         }
 
@@ -36,4 +36,4 @@ class Heading2 extends GOComponent {
     }
 }
 
-window.customElements.define('greyowl-heading2', Heading2);
+window.customElements.define('go-heading2', Heading2);

@@ -1,6 +1,7 @@
 TODO:
 - support passing nested object references as context instead of just root level object properties
 - support passing same context object also as context to child objects
-- update should be private to go-component, no need of 2-way data binding
-- data change should be uni directional from top to bottom
-- data diff should be done inorder to rerender components
+- data diff should be done inorder to rerender components - preferably automatically
+
+- replace temp-store with redux
+- replace dependency on JSON with immutable.JSON

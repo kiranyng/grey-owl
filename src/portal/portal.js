@@ -1,6 +1,6 @@
 import GOComponent from '../core/go-component.js';
 
-const template = `
+const tmpl = `
 <style>
     p {
         color: gray;
@@ -8,12 +8,13 @@ const template = `
 </style>
 <p>I am portal component - mode:{{id}}</p>
 <button id="alertBtn">update</button>
-<greyowl-header context='headings'></grayowl-header>`;
+<go-header context='headings'></go-header>`;
 
 class Portal extends GOComponent {
     mode = 'closed';
     cmpName = 'portal';
-    _compRef = this;
+
+    template = tmpl;
 
     dataContext = {
         id: '2013041',
@@ -28,8 +29,6 @@ class Portal extends GOComponent {
 
     constructor() {
         super();
-
-        this.template = template;
 
         Store.update(this.dataContext);
         // below callback binding/scoping is important to pocess the right `this` reference
@@ -59,4 +58,4 @@ class Portal extends GOComponent {
     }
 }
 
-window.customElements.define('greyowl-portal', Portal);
+window.customElements.define('go-portal', Portal);

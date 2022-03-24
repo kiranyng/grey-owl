@@ -1,6 +1,7 @@
 const missingTemplate = '<div>template unspecified!</div>';
 
 export default class GreyOwl extends HTMLElement {
+    mode = "closed";
     _sRoot = null; // @fix find a way to make this object unavailable to externals scripts
     cmpName = this.tagName;
     template = missingTemplate;
