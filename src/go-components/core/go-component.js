@@ -7,6 +7,7 @@ export default class GreyOwl extends HTMLElement {
     _sRoot = null; // @fix find a way to make this object unavailable to externals scripts
     cmpName = this.tagName;
     template = missingTemplate;
+    dataContext = {};
 
     connectedCallback() {
         Logger.log('connected component:', this.cmpName);
@@ -27,7 +28,7 @@ export default class GreyOwl extends HTMLElement {
 
         this.beforeRender();
 
-        const template = Handlebars.compile(this.template);
+        const template = Handlebars.compile(this.template); // @todo use precompled templates instead
         this._sRoot.innerHTML = template(this.dataContext ? this.dataContext : {});
 
         // assign contexts
@@ -53,13 +54,16 @@ export default class GreyOwl extends HTMLElement {
         // @todo do priliminary comparision of all the references in the template
         // @todo make shouldUpdate as optional override just for additional optimization
 
-        return true;
+        return false;
     }
 
     onDataChange(oldData, newData) {
         Logger.dev(`onDataChange(${this.cmpName}):`,oldData, newData);
 
+        this.dataContext = newData;
+
         if( oldData !== newData && this.shouldUpdate(oldData, newData) ) {
+            Logger.dev('do update!', this.cmpName, 'newData:', newData);
             // update the component
             this._update(newData);
         } else {
@@ -83,12 +87,12 @@ export default class GreyOwl extends HTMLElement {
     _update(newData) {
         // @note NEVER invoke _update from afterRender callback
 
-        Logger.dev(`rerendering component ${this.cmpName}`);
+        Logger.dev(`rerendering component ${this.cmpName} with new contextData:`, newData);
 
         // set dataContext with newData
         this.dataContext = newData;
 
-        // @optimize add logic to do some dom diff or prop diff or anything and rerender only required elements/components
+        // @optimize add logic to do some dom diff or prop diff etc., and rerender only required elements/components
 
         this._render();
     }

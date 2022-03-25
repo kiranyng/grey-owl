@@ -1,15 +1,22 @@
 import GOComponent from '../core/go-component.js';
 
 const tmpl = `<style>
-    div#panel {
+    :host {
         display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
         
         padding:5px;
         
         min-height: 50px;
     }
+
+    :host(.hidden) {
+        display: none;
+    }
 </style>
-<div id="panel"><slot></slot></div>
+<slot></slot>
 `;
 
 class Panel extends GOComponent {
@@ -17,7 +24,29 @@ class Panel extends GOComponent {
     cmpName = 'panel';
 
     afterRender() {
+        if(this.getAttribute('hide')){
+            this.classList.add("hidden");
+        } else {
+            this.classList.remove("hidden");
+        }
+
         Logger.dev(`afterRender(${this.cmpName})`);
+    }
+
+    static get observedAttributes() {
+        return ['hide'];
+    }
+      
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case 'hide':
+                if(newValue == 'true'){
+                    this.classList.add("hidden");
+                } else {
+                    this.classList.remove("hidden");
+                }
+            break;
+        }
     }
 }
 

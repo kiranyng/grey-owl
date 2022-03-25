@@ -4,4 +4,6 @@ TODO:
 - data diff should be done inorder to rerender components - preferably automatically
 
 - replace temp-store with redux
-- replace dependency on JSON with immutable.JSON
+- replace dependency on JSON with immutable.js
+
+- components must be preferred to accept markup rather than dataContext objects

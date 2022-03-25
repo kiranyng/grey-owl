@@ -13,7 +13,10 @@ import './core/go-component.js';
 import './heading/heading2.js';
 import './heading/heading3.js';
 
+// - panels
 import './panel/panel.js';
+
+import './carousel/carousel.js';
 
 import './tabpanel/tabs.js';
 import './tabpanel/tabpanel.js';

@@ -1,8 +1,11 @@
 import GOComponent from '../core/go-component.js';
 
 const tmpl = `<style>
-    ul {
+    :host {
         display: flex;
+        flex-direction: row;
+
+        min-width: 10em;
         padding: 0;
         margin: 0;
 
@@ -11,7 +14,12 @@ const tmpl = `<style>
         background: #f1f1f1;
         color: black;
     }
-    ul > li{
+
+    :host(.leftTabs) {
+        flex-direction: column;
+    }
+
+    :host > span {
         display: inline;
         text-align: left;
 
@@ -21,21 +29,23 @@ const tmpl = `<style>
         background-color: lightgray;
         border-right: 1px solid gray;
     }
-    ul > li:hover{
+    :host(.leftTabs) > span {
+        border-right: 0;
+        border-bottom: 1px solid gray;
+    }
+    :host > span:hover{
         background-color: #d4e5eb;
     }
-    ul > li.active{
-        background-color: white;
+    :host > span.active{
+        background-color: #f3f3f3;
         font-weight: bold;
     }
 </style>
-<ul>
-    {{#each items}}
-        <li key='{{this.key}}' {{#iff @root.active '==' this.key}} class="active" {{/iff}}>
-            {{this.title}}
-        </li>
-    {{/each}}
-</ul>
+{{#each items}}
+    <span key='{{this.key}}' {{#iff @root.active '==' this.key}} class="active" {{/iff}}>
+        {{this.title}}
+    </span>
+{{/each}}
 `;
 
 class TabpanelTabs extends GOComponent {
@@ -44,21 +54,38 @@ class TabpanelTabs extends GOComponent {
     template = tmpl;
 
     afterRender(){
-        this._sRoot.querySelector('ul').addEventListener('click', (ev) => {
-            Logger.dev('ul click event', ev.target.tagName);
+        const attrTabPos = this.dataContext.tabPosition;
 
-            if(ev.target.tagName.toLowerCase() === 'li') {
+        if(attrTabPos){
+            switch(attrTabPos){
+                case 'left': 
+                    this.tabPosition = 'left';
+
+                    this.classList.add('leftTabs');
+                break;
+                case 'top':
+                default: 
+                    this.classList.remove('leftTabs');
+                    this.tabPosition = 'top';
+            }
+
+            this.setAttribute('tab-position', attrTabPos);
+        }
+
+        const tabs = this._sRoot.querySelectorAll('span');
+        Array.from(tabs).forEach(tab => {
+            tab.addEventListener('click', (ev) => {
                 const itemKey = ev.target.getAttribute('key');
                 const item = this.dataContext.items[itemKey];
 
                 this.triggerEvent('tabchange', item);
-            }
+            });
         });
     }
 
     shouldUpdate(oldData, newData) {
         // @todo @fix items array comparision should be deep
-        if((oldData.items !== newData.items) || (oldData.active !== newData.active)){
+        if( !oldData || (oldData.items !== newData.items) || (oldData.active !== newData.active)){
             return true;
         }
 
