@@ -1,4 +1,17 @@
-import GOComponent from '../core/go-component.js';
+import GOComponent from './../core/go-component';
+
+export interface TabItemContext {
+    key: string,
+    label: string
+}
+
+export type TabPosition = 'top' | 'left';
+
+export interface TabsContext {
+    tabPosition: TabPosition,
+    items: Record<string, TabItemContext>,
+    active?: 'true' | 'false'
+}
 
 const tmpl = `<style>
     :host {
@@ -43,7 +56,7 @@ const tmpl = `<style>
 </style>
 {{#each items}}
     <span key='{{this.key}}' {{#iff @root.active '==' this.key}} class="active" {{/iff}}>
-        {{this.title}}
+        {{this.label}}
     </span>
 {{/each}}
 `;
@@ -52,9 +65,11 @@ class TabpanelTabs extends GOComponent {
     cmpName = 'tabpanel-tabs';
 
     template = tmpl;
+    tabPosition: TabPosition = 'top';
+    dataContext: TabsContext;
 
     afterRender(){
-        const attrTabPos = this.dataContext.tabPosition;
+        const attrTabPos: TabPosition = this.dataContext.tabPosition;
 
         if(attrTabPos){
             switch(attrTabPos){
@@ -72,10 +87,10 @@ class TabpanelTabs extends GOComponent {
             this.setAttribute('tab-position', attrTabPos);
         }
 
-        const tabs = this._sRoot.querySelectorAll('span');
+        const tabs: HTMLElement[] = this._sRoot.querySelectorAll('span');
         Array.from(tabs).forEach(tab => {
             tab.addEventListener('click', (ev) => {
-                const itemKey = ev.target.getAttribute('key');
+                const itemKey = (ev.target as HTMLElement).getAttribute('key');
                 const item = this.dataContext.items[itemKey];
 
                 this.triggerEvent('tabchange', item);

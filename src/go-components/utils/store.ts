@@ -1,5 +1,7 @@
+import Logger from "./debug-log";
+
 const Store = Object.freeze((function(){
-    let storeCallback = ()=>{
+    let storeCallback = (oldData, newData)=>{
         Logger.warn('store callback not specified!');
     };
     
@@ -23,4 +25,4 @@ const Store = Object.freeze((function(){
     }
 })());
 
-window.Store = Store;
+export default Store;

@@ -1,9 +1,10 @@
 import Handlebars from "handlebars";
+import Logger from "./../utils/debug-log";
 
 const missingTemplate = '<div>template unspecified!</div>';
 
 export default class GreyOwl extends HTMLElement {
-    mode = "closed";
+    mode: ShadowRootMode = "closed";
     _sRoot = null; // @fix find a way to make this object unavailable to externals scripts
     cmpName = this.tagName;
     template = missingTemplate;
@@ -45,7 +46,7 @@ export default class GreyOwl extends HTMLElement {
             });
         }
         
-        this.afterRender(this._sRoot);
+        this.afterRender();
     }
 
     shouldUpdate(oldData, newData) {

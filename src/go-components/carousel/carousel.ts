@@ -1,4 +1,5 @@
-import GOComponent from '../core/go-component.js';
+import GOComponent from './../core/go-component';
+import Logger from './../utils/debug-log';
 
 const tmpl = `<style>
    :host {

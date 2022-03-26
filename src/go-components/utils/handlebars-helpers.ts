@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars';
+import Logger from './debug-log';
 
 Handlebars.registerHelper('iff', function(a, operator, b, opts) {
     Logger.dev(`iff ${a} ${operator} ${b} `,opts);

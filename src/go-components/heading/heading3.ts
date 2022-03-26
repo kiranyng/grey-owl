@@ -1,4 +1,4 @@
-import GOComponent from '../core/go-component.js';
+import GOComponent from './../core/go-component';
 
 const tmpl = `
 <style>
@@ -10,7 +10,7 @@ const tmpl = `
 `;
 
 class Heading3 extends GOComponent {
-    mode = 'closed';
+    mode:ShadowRootMode = 'closed';
     cmpName = 'heading3';
 
     template = tmpl;

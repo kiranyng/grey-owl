@@ -1,4 +1,11 @@
-import GOComponent from '../core/go-component.js';
+import GOComponent from './../core/go-component';
+import Logger from './../utils/debug-log';
+import { TabItemContext, TabPosition, TabsContext } from './tabs';
+
+
+interface TabPanelContext {
+    tabs: TabsContext
+}
 
 const tmpl = `<style>
    :host {
@@ -23,8 +30,8 @@ class TabPanel extends GOComponent {
 
     template = tmpl;
 
-    tabPosition = 'top';
-    panels = {};
+    tabPosition: TabPosition = 'top';
+    panels: Record<string, HTMLElement> = {};
 
     /*
     dataContext = {
@@ -91,7 +98,7 @@ class TabPanel extends GOComponent {
         this._sRoot.querySelector('slot').addEventListener('slotchange', (ev) => {
             Logger.dev('slot change event!',ev.target);
 
-            const newData = {
+            const newData: TabPanelContext = {
                 tabs: {
                     tabPosition: this.tabPosition,
                     items: {}
@@ -108,14 +115,14 @@ class TabPanel extends GOComponent {
                 // @todo filter non-panel based components and hide them
                 if(element.getAttribute){
                     const key = element.getAttribute('key');
-                    const title = element.getAttribute('tabname');
+                    const label = element.getAttribute('label');
                     const active = element.getAttribute('active');
 
                     this.panels[key] = element;
 
                     newData.tabs.items[key] = {
                         key,
-                        title
+                        label
                     }
 
                     if(active === 'true' || isFirst){

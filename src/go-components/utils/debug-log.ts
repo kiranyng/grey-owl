@@ -12,9 +12,9 @@ const Logger = Object.freeze({
     log: (...args) => {
         Logger.level >= 60 && console.log(...args);
     },
-    todo: () => {
+    todo: (...args) => {
         Logger.level >= 75 && console.info(...args);
     }
 });
 
-window.Logger = Logger;
+export default Logger;
