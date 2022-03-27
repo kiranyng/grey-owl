@@ -66,7 +66,7 @@ class TabpanelTabs extends GOComponent {
 
     template = tmpl;
     tabPosition: TabPosition = 'top';
-    dataContext: TabsContext;
+    dataContext!: TabsContext;
 
     afterRender(){
         const attrTabPos: TabPosition = this.dataContext.tabPosition;
@@ -87,18 +87,18 @@ class TabpanelTabs extends GOComponent {
             this.setAttribute('tab-position', attrTabPos);
         }
 
-        const tabs: HTMLElement[] = this._sRoot.querySelectorAll('span');
+        const tabs: NodeListOf<HTMLSpanElement> = this._sRoot.querySelectorAll('span');
         Array.from(tabs).forEach(tab => {
             tab.addEventListener('click', (ev) => {
                 const itemKey = (ev.target as HTMLElement).getAttribute('key');
-                const item = this.dataContext.items[itemKey];
+                const item = this.dataContext.items[itemKey!];
 
                 this.triggerEvent('tabchange', item);
             });
         });
     }
 
-    shouldUpdate(oldData, newData) {
+    shouldUpdate(oldData: TabsContext, newData: TabsContext) {
         // @todo @fix items array comparision should be deep
         if( !oldData || (oldData.items !== newData.items) || (oldData.active !== newData.active)){
             return true;

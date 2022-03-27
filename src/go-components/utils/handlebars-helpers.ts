@@ -1,7 +1,8 @@
-import Handlebars from 'handlebars';
+// import Handlebars from 'handlebars';
 import Logger from './debug-log';
+const Handlebars = require('handlebars');
 
-Handlebars.registerHelper('iff', function(a, operator, b, opts) {
+Handlebars.registerHelper('iff', (a: string, operator: string, b: string, opts: { fn: any, inverse: any }) => {
     Logger.dev(`iff ${a} ${operator} ${b} `,opts);
 
     var bool = false;

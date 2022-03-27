@@ -1,7 +1,11 @@
 import Logger from "./debug-log";
 
+interface AppStoreData {
+
+}
+
 const Store = Object.freeze((function(){
-    let storeCallback = (oldData, newData)=>{
+    let storeCallback = (oldData: AppStoreData, newData: AppStoreData)=>{
         Logger.warn('store callback not specified!');
     };
     
@@ -11,7 +15,7 @@ const Store = Object.freeze((function(){
         getDataClone: () => {
             return window.JSON.parse(window.JSON.stringify(storeData));
         },
-        update(newData){
+        update(newData: AppStoreData){
             const oldData = storeData;
 
             storeData = window.JSON.parse(window.JSON.stringify(newData));
@@ -19,7 +23,7 @@ const Store = Object.freeze((function(){
             storeCallback(oldData, this.getDataClone());
         },
         // @todo make this an observer/observable to support multiple callbacks
-        setCallback:(cb)=>{
+        setCallback:(cb: (oldData:AppStoreData, newData: AppStoreData) => void)=>{
             storeCallback = cb;
         }
     }

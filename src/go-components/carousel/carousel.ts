@@ -64,13 +64,10 @@ class Carousel extends GOComponent {
     template = tmpl;
 
     direction = 'left-right'; // 'top-bottom'
-    panels = [];
+    panels: HTMLElement[] = [];
     activePanelIndex = 0;
 
-    constructor() {
-        super();
-        Logger.dev('Carousel constructor!');
-    }
+    _interval!: ReturnType<typeof setInterval>;
 
     beforeRender(){
         const dir = this.getAttribute('direction');
@@ -88,17 +85,15 @@ class Carousel extends GOComponent {
     }
 
     afterRender(){
-        this._sRoot.querySelector('slot').addEventListener('slotchange', (ev) => {
-            const nodes = ev.target.assignedNodes();
+        this._sRoot.querySelector('slot')?.addEventListener('slotchange', (ev) => {
+            const nodes = (ev.target as HTMLSlotElement).assignedNodes();
 
-            Logger.dev('>>> panels:', nodes);
             nodes.forEach((element) => {
-                
-                Logger.dev('>>> el tagname:', element.tagName);
+                Logger.dev('>>> el tagname:', (element as GOComponent).tagName);
 
                 // @todo filter non-panel based components and hide them
-                if(element.tagName && element.tagName.toLowerCase() === 'go-panel'){
-                    this.panels.push(element);
+                if((element as GOComponent).tagName && (element as GOComponent).tagName.toLowerCase() === 'go-panel'){
+                    this.panels.push(element as HTMLElement);
                 }
             });
 
@@ -107,7 +102,7 @@ class Carousel extends GOComponent {
         });
 
         // add timer for animations
-        setInterval(() => {
+        this._interval = setInterval(() => {
             if(this.panels.length === 0){
                 return;
             }
@@ -125,8 +120,12 @@ class Carousel extends GOComponent {
         }, 5000);
     }
 
-    shouldUpdate(oldData, newData) {
+    shouldUpdate() {
         return false;
+    }
+
+    disconnectedCallback(): void {
+        clearTimeout(this._interval);
     }
 }
 

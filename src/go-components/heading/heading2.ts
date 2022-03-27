@@ -2,6 +2,10 @@ import GOComponent from './../core/go-component';
 import Logger from './../utils/debug-log';
 import Store from './../utils/store';
 
+interface DataContext {
+    one: string
+}
+
 const tmpl = `
 <style>
     h2 {
@@ -19,17 +23,15 @@ class Heading2 extends GOComponent {
 
     afterRender() {
         Logger.dev('afterRender context:', this.dataContext);
-        Logger.dev('getAttribute:', this.getAttribute('can-you'));
 
-        this._sRoot.querySelector('h2').addEventListener('click', () => {
+        this._sRoot.querySelector('h2')?.addEventListener('click', () => {
             const newData = Store.getDataClone();
-            // newData.id = 'ABCD';
             newData.headings.h2.one = 'TEST';
             Store.update(newData);
         });
     }
 
-    shouldUpdate(oldData, newData){
+    shouldUpdate(oldData: DataContext, newData: DataContext){
         if(oldData.one === newData.one){
             return false;
         }

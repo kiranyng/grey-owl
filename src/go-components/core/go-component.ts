@@ -1,14 +1,27 @@
-import Handlebars from "handlebars";
+// import Handlebars from "handlebars";
 import Logger from "./../utils/debug-log";
+const Handlebars = require('handlebars');
+
+export interface DataContext {
+    [key: string]: any
+};
 
 const missingTemplate = '<div>template unspecified!</div>';
 
+
 export default class GreyOwl extends HTMLElement {
     mode: ShadowRootMode = "closed";
-    _sRoot = null; // @fix find a way to make this object unavailable to externals scripts
+    _sRoot!: ShadowRoot; // @fix find a way to make this object unavailable to externals scripts
+    
     cmpName = this.tagName;
     template = missingTemplate;
-    dataContext = {};
+    dataContext: DataContext;
+
+    constructor() {
+        super();
+
+        this.dataContext = {};
+    }
 
     connectedCallback() {
         Logger.log('connected component:', this.cmpName);
@@ -40,16 +53,16 @@ export default class GreyOwl extends HTMLElement {
             contextedEls.forEach((el) => {
                 // @feature support alternate context object, below statement supports only current dataContext obj property ref as context
                 // @feature support nested contexts, below statement supports only immediate property ref as context
-                el.dataContext = this.dataContext[el.getAttribute('context')];
+                (el as GreyOwl).dataContext = (this.dataContext[el.getAttribute('context')!] as DataContext);
 
-                Logger.dev(`setting context(@${this.cmpName}->{${el.tagName}}):`, el.dataContext);
+                Logger.dev(`setting context(@${this.cmpName}->{${el.tagName}}):`, (el as GreyOwl).dataContext);
             });
         }
         
         this.afterRender();
     }
 
-    shouldUpdate(oldData, newData) {
+    shouldUpdate(oldData: DataContext, newData: DataContext) {
         // placeholder. should be overridden by child classes to trigger rerender when there is a change
 
         // @todo do priliminary comparision of all the references in the template
@@ -58,7 +71,7 @@ export default class GreyOwl extends HTMLElement {
         return false;
     }
 
-    onDataChange(oldData, newData) {
+    onDataChange(oldData: DataContext, newData: DataContext) {
         Logger.dev(`onDataChange(${this.cmpName}):`,oldData, newData);
 
         this.dataContext = newData;
@@ -73,7 +86,7 @@ export default class GreyOwl extends HTMLElement {
             
             if(contextedEls && this.dataContext){
                 contextedEls.forEach((el) => {
-                    el.onDataChange( oldData[el.getAttribute('context')], newData[el.getAttribute('context')] );
+                    (el as GreyOwl).onDataChange( oldData[el.getAttribute('context')!], newData[el.getAttribute('context')!] );
 
                     Logger.dev(`invoked onDataChange(@${this.cmpName}->{${el.tagName}})`);
                 });
@@ -85,7 +98,7 @@ export default class GreyOwl extends HTMLElement {
      * `_update` should be private and should not be accessible by the inherited components. No need of 2-way data binding.
      * Data flow should be uni-directional, top to bottom.
      */
-    _update(newData) {
+    _update(newData: DataContext) {
         // @note NEVER invoke _update from afterRender callback
 
         Logger.dev(`rerendering component ${this.cmpName} with new contextData:`, newData);
@@ -114,7 +127,7 @@ export default class GreyOwl extends HTMLElement {
         // placeholder. can be overridden by child classes
     }
 
-    triggerEvent(eventName, detail) {
+    triggerEvent(eventName: string, detail: any) {
         const event = new CustomEvent(eventName, { detail });
 
         Logger.log(`Triggering event ${eventName}`, event);

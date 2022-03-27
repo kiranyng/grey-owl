@@ -38,7 +38,7 @@ class Panel extends GOComponent {
         return ['hide'];
     }
       
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         switch (name) {
             case 'hide':
                 if(newValue == 'true'){

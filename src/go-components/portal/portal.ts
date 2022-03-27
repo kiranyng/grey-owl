@@ -1,6 +1,12 @@
 import GOComponent from './../core/go-component';
 import Logger from './../utils/debug-log';
 import Store from './../utils/store';
+import { HeaderDataContext } from './header';
+
+interface PortalDataContext {
+    id: string,
+    headings: HeaderDataContext
+}
 
 const tmpl = `
 <style>
@@ -18,7 +24,7 @@ class Portal extends GOComponent {
 
     template = tmpl;
 
-    dataContext = {
+    dataContext: PortalDataContext = {
         id: '2013041',
         headings: {
             h1: 'KiranYNG',
@@ -39,19 +45,16 @@ class Portal extends GOComponent {
 
     afterRender() {
         // attach event listeners
-        this._sRoot.querySelector('#alertBtn').addEventListener('click', (ev) => {
+        this._sRoot.querySelector('#alertBtn')?.addEventListener('click', (ev) => {
             Logger.dev('clicked button!', ev);
-/*
-            this.dataContext.id = '12345';
-            this.dataContext.headings.h2.one = 'KiranKumarYNG';
-*/
+            
             const newData = Store.getDataClone();
             newData.id = '98765';
             Store.update(newData);
         });
     }
 
-    shouldUpdate(oldData, newData) {
+    shouldUpdate(oldData: PortalDataContext, newData: PortalDataContext) {
         if(oldData.id !== newData.id){
             return true;
         }

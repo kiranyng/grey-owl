@@ -95,17 +95,18 @@ class TabPanel extends GOComponent {
     }
 
     afterRender(){
-        this._sRoot.querySelector('slot').addEventListener('slotchange', (ev) => {
+        this._sRoot.querySelector('slot')?.addEventListener('slotchange', (ev) => {
             Logger.dev('slot change event!',ev.target);
 
             const newData: TabPanelContext = {
                 tabs: {
                     tabPosition: this.tabPosition,
-                    items: {}
+                    items: {},
+                    active: 'false'
                 }
             };
 
-            const nodes = ev.target.assignedNodes();
+            const nodes = (ev.target as HTMLSlotElement).assignedNodes();
             Logger.dev('assigned nodes:', nodes);
 
             let isFirst = true;
@@ -113,12 +114,14 @@ class TabPanel extends GOComponent {
                 Logger.dev('el',element);
 
                 // @todo filter non-panel based components and hide them
-                if(element.getAttribute){
-                    const key = element.getAttribute('key');
-                    const label = element.getAttribute('label');
-                    const active = element.getAttribute('active');
+                if((element as HTMLElement).tagName && (element as HTMLElement).tagName.toLowerCase() === 'go-panel'){
+                    const el =  (element as HTMLElement);
 
-                    this.panels[key] = element;
+                    const key = el.getAttribute('key')!;
+                    const label = el.getAttribute('label')!;
+                    const active = el.getAttribute('active')!;
+
+                    this.panels[key] = el;
 
                     newData.tabs.items[key] = {
                         key,
@@ -130,9 +133,9 @@ class TabPanel extends GOComponent {
 
                         newData.tabs.active = key;
 
-                        element.setAttribute('hide', 'false');
+                        el.setAttribute('hide', 'false');
                     } else {
-                        element.setAttribute('hide', 'true');
+                        el.setAttribute('hide', 'true');
                     }
                 }
             });
@@ -140,10 +143,10 @@ class TabPanel extends GOComponent {
             this.onDataChange(this.dataContext, newData);
         });
 
-        this._sRoot.querySelector('go-tabpanel-tabs').addEventListener('tabchange', (ev) => {
+        this._sRoot.querySelector('go-tabpanel-tabs')?.addEventListener('tabchange', (ev) => {
             Logger.dev('tabchange event listened!', ev);
 
-            const item = ev.detail;
+            const item: TabItemContext = (<any>ev).detail;
 
             // update attrubute changes
             Object.values(this.panels).map(panel => {
@@ -163,7 +166,7 @@ class TabPanel extends GOComponent {
         });
     }
 
-    shouldUpdate(oldData, newData) {
+    shouldUpdate(oldData: TabPanelContext, newData: TabPanelContext) {
         return false;
     }
 }

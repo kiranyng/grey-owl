@@ -1,18 +1,18 @@
 const Logger = Object.freeze({
     level: 50,
-    error: (...args) => {
+    error: (...args: any) => {
         Logger.level >= 5 && console.error(...args);
     },
-    warn: (...args) => {
+    warn: (...args: any) => {
         Logger.level >= 25 && console.warn(...args);
     },
-    dev:  (...args) => {
+    dev:  (...args: any) => {
         Logger.level >= 50 && console.debug(...args);
     },
-    log: (...args) => {
+    log: (...args: any) => {
         Logger.level >= 60 && console.log(...args);
     },
-    todo: (...args) => {
+    todo: (...args: any) => {
         Logger.level >= 75 && console.info(...args);
     }
 });

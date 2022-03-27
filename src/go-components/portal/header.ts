@@ -1,5 +1,13 @@
-import GOComponent from './../core/go-component';
+import GOComponent, { DataContext } from './../core/go-component';
 import Logger from './../utils/debug-log';
+
+export interface HeaderDataContext extends DataContext{
+    h1: string,
+    h2: { // temp @remove
+        one: string,
+        two: string
+    }
+}
 
 const tmpl = `<style>
     h2 {
@@ -19,7 +27,7 @@ class Header extends GOComponent {
         Logger.dev('afterRender context:', this.dataContext);
     }
 
-    shouldUpdate(oldData, newData) {
+    shouldUpdate(oldData: HeaderDataContext, newData: HeaderDataContext) {
         if(oldData.h1 !== newData.h1){
             return true;
         }
