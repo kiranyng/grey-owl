@@ -10,7 +10,7 @@ export type TabPosition = 'top' | 'left';
 export interface TabsContext {
     tabPosition: TabPosition,
     items: Record<string, TabItemContext>,
-    active?: 'true' | 'false'
+    active: string
 }
 
 const tmpl = `<style>
