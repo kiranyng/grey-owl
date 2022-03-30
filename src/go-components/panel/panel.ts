@@ -1,3 +1,4 @@
+import { Spy } from '../utils/decorators';
 import GOComponent from './../core/go-component';
 import Logger from './../utils/debug-log';
 
@@ -17,31 +18,47 @@ const tmpl = `<style>
         display: none;
     }
 </style>
-<slot></slot>
-`;
+<slot></slot>`;
+// @todo add an optional TitleBar cmp here - with collapsible funtionality maintained by panel, listening to click event
+
+export type PanelVarient = 'normal' | 'titlebar' | 'minimized';
 
 class Panel extends GOComponent {
     template = tmpl;
     cmpName = 'panel';
 
+    @Spy
+    varient = 'normal';
+
     afterRender() {
-        if(this.getAttribute('hide')){
+        if(this.getAttribute('varient') === 'hidden'){
             this.classList.add("hidden");
         } else {
             this.classList.remove("hidden");
         }
 
         Logger.dev(`afterRender(${this.cmpName})`);
+
+        // auto update attribues on property update. @refactor
+        this.onSpyUpdate((key: string, oldValue: string, newValue: string) => {
+            Logger.dev('Observable decorator invoked!');
+
+            switch(key){
+                case 'varient':
+                    this.setAttribute(key, newValue);
+                    break;
+            }
+        });
     }
 
     static get observedAttributes() {
-        return ['hide'];
+        return ['varient'];
     }
       
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         switch (name) {
-            case 'hide':
-                if(newValue == 'true'){
+            case 'varient':
+                if(newValue == 'hidden'){
                     this.classList.add("hidden");
                 } else {
                     this.classList.remove("hidden");

@@ -29,4 +29,8 @@ const Store = Object.freeze((function(){
     }
 })());
 
+export const add= function(a: number, b: number) {
+    return a+b;
+}
+
 export default Store;

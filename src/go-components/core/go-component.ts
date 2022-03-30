@@ -127,6 +127,11 @@ export default class GreyOwl extends HTMLElement {
         // placeholder. can be overridden by child classes
     }
 
+    // @workaround for typescript to allow accessing this dynamicly injected method via decorator
+    onSpyUpdate( fn: (key: string, newValue: any, oldValue: any) => void) {
+        // placeholder. whenever an spy decorated property changes, this method gets invoked - overridden by the spy
+    }
+
     triggerEvent(eventName: string, detail: any) {
         const event = new CustomEvent(eventName, { detail });
 

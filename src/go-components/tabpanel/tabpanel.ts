@@ -133,9 +133,9 @@ class TabPanel extends GOComponent {
 
                         newData.tabs.active = key;
 
-                        el.setAttribute('hide', 'false');
+                        el.setAttribute('varient', 'normal');
                     } else {
-                        el.setAttribute('hide', 'true');
+                        el.setAttribute('varient', 'hidden');
                     }
                 }
             });
@@ -153,8 +153,8 @@ class TabPanel extends GOComponent {
                 Logger.dev('panel iter:', panel);
 
                 item.key == panel.getAttribute('key') ?
-                    panel.setAttribute('hide', 'false'):
-                    panel.setAttribute('hide', 'true');
+                    panel.setAttribute('varient', 'normal'):
+                    panel.setAttribute('varient', 'hidden');
             });
 
             // notify data changes

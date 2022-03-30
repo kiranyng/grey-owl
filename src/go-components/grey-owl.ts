@@ -1,22 +1,26 @@
 // utils
-import './utils/debug-log.ts';
-import './utils/handlebars-helpers.ts';
-import './utils/store.ts';
+import './utils/debug-log';
+import './utils/handlebars-helpers';
+
+import './utils/decorators';
+import './utils/store';
 
 // core
-import './core/go-component.ts';
+import './core/go-component';
 
 // components
-import './heading/heading2.ts';
-import './heading/heading3.ts';
+import './heading/heading2';
+import './heading/heading3';
 
 // - panels
-import './panel/panel.ts';
+import './panel/panel';
 
-import './carousel/carousel.ts';
+import './carousel/carousel';
 
-import './tabpanel/tabs.ts';
-import './tabpanel/tabpanel.ts';
+import './tabpanel/tabs';
+import './tabpanel/tabpanel';
 
-import './portal/portal.ts';
-import './portal/header.ts';
+import './accordian/accordian';
+
+import './portal/portal';
+import './portal/header';

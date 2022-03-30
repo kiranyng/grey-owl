@@ -10,7 +10,7 @@
   "scripts": {
     "build": "webpack build --mode production",
     "dev": "webpack build --mode development --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,13 +24,16 @@
   },
   "homepage": "https://github.com/kiranyng/grey-owl#readme",
   "devDependencies": {
+    "@types/jest": "^27.4.1",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.4.1",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.5.1",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.1",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
+    "ts-jest": "^27.1.4",
     "typescript": "^4.6.3",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2"
